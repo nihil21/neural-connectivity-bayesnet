@@ -1,0 +1,5 @@
+.ipynb_checkpoints/
+.vscode/
+doc/
+src/development_fmri/
+src/nilearn_cache/
