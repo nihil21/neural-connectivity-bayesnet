@@ -4,4 +4,4 @@ doc/
 src/development_fmri/
 src/nilearn_cache/
 src/pgmpy/
-src/pycache/
+src/gibbs_sampler.pkl
