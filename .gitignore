@@ -4,4 +4,3 @@ doc/
 src/development_fmri/
 src/nilearn_cache/
 src/pgmpy/
-src/gibbs_sampler.pkl
