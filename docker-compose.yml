@@ -6,14 +6,3 @@ services:
     - "8888:8888"
     volumes:
     - ./src:/app/src
-    devices:
-    - /dev/nvidia0:/dev/nvidia0
-    - /dev/nvidiactl:/dev/nvidiactl
-    - /dev/nvidia-modeset:/dev/nvidia-modeset
-    - /dev/nvidia-uvm:/dev/nvidia-uvm
-    - /dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools
-    deploy:
-      resources:
-        reservations:
-          devices:
-          - capabilities: [gpu]

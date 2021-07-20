@@ -4,7 +4,7 @@ from concurrent.futures import ProcessPoolExecutor
 import psutil
 import typing
 
-from pgmpy.models import BayesianModel, DynamicBayesianNetwork, DynamicNode
+from pgmpy.models import BayesianModel, DynamicBayesianNetwork
 from pgmpy.estimators import BDeuScore
 from pgmpy.factors.discrete import TabularCPD
 from pgmpy.inference import VariableElimination
@@ -192,14 +192,14 @@ def print_edges(model: typing.Union[BayesianModel, DynamicBayesianNetwork]):
 def to_dynamic_cpd(static_model: BayesianModel, stat_to_dyn_map: typing.Dict[str, str], 
                    next_to_curr_map: typing.Dict[str, str]) -> TabularCPD:
     # Lambda to obtain dynamic nodes' name
-    get_dynamic_node = lambda node: DynamicNode(stat_to_dyn_map[node], 0) if node.endswith('_T') \
-        else DynamicNode(stat_to_dyn_map[next_to_curr_map[node]], 1)
+    get_dynamic_node = lambda node: (stat_to_dyn_map[node], 0) if node.endswith('_T') \
+        else (stat_to_dyn_map[next_to_curr_map[node]], 1)
     
     # Extract information about CPDs of the static model
     cpds_info = [{'variable': get_dynamic_node(cpd.variable),
                   'variable_card': 4,
                   'values': cpd.get_values(),
-                  'evidence': [DynamicNode(stat_to_dyn_map[e], 0) for e in cpd.get_evidence()][::-1] \
+                  'evidence': [(stat_to_dyn_map[e], 0) for e in cpd.get_evidence()][::-1] \
                       if len(cpd.get_evidence()) > 0 else None,
                   'evidence_card': [4] * len(cpd.get_evidence()) \
                       if len(cpd.get_evidence()) > 0 else None,
@@ -316,8 +316,8 @@ def generate_time_series(sampler: BayesianModelSampling, length: int, labels: ty
 
 def active_trail(dynamic_model: DynamicBayesianNetwork, node: typing.Tuple[str, int],
                  evidence: typing.Sequence[typing.Tuple[str, int]] = []):
-    node = DynamicNode(*node)
-    evidence = [DynamicNode(*e) for e in evidence]
+    # node = DynamicNode(*node)
+    # evidence = [DynamicNode(*e) for e in evidence]
     reachable = dynamic_model.active_trail_nodes(node, observed=evidence).get(node)
     reachable.remove(node)
     reachable = sorted(reachable)
