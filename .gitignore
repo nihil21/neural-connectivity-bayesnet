@@ -130,3 +130,7 @@ dmypy.json
 
 # VSCode
 .vscode/
+
+# Cache
+src/development_fmri/
+src/nilearn_cache/
